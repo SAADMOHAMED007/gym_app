@@ -1,0 +1,14 @@
+import { PaginationParams, PaginatedResponse } from './types';
+export declare function createPaginationObject<T>(items: T[], total: number, { page, limit }: PaginationParams): PaginatedResponse<T>;
+export declare function hashPassword(password: string): Promise<string>;
+export declare function comparePasswords(plainText: string, hashedPassword: string): Promise<boolean>;
+export declare function generateUniqueFileName(originalName: string): string;
+export declare function formatBytes(bytes: number, decimals?: number): string;
+export declare function isValidDate(date: any): boolean;
+export declare function normalizeEmail(email: string): string;
+export declare function sanitizeFileName(fileName: string): string;
+export declare function generateRandomPassword(length?: number): string;
+export declare function sleep(ms: number): Promise<void>;
+export declare function parseBoolean(value: any): boolean;
+export declare function removeUndefined<T extends object>(obj: T): Partial<T>;
+export declare function generateSlug(text: string): string;

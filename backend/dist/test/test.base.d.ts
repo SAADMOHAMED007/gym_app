@@ -1,0 +1,32 @@
+import { INestApplication } from '@nestjs/common';
+import { TestingModule } from '@nestjs/testing';
+import { Connection } from 'typeorm';
+import { TestDatabaseService } from './test.database';
+import { ConfigService } from '../config/config.service';
+export declare class TestBase {
+    protected app: INestApplication;
+    protected module: TestingModule;
+    protected connection: Connection;
+    protected databaseService: TestDatabaseService;
+    protected configService: ConfigService;
+    beforeAll(): Promise<void>;
+    afterAll(): Promise<void>;
+    beforeEach(): Promise<void>;
+    protected createTestUser(override?: {}): Promise<import("../entities").User>;
+    protected createTestGym(override?: {}): Promise<import("../entities").Gym>;
+    protected createTestCourse(override?: {}): Promise<import("../entities").Course>;
+    protected createTestExercise(override?: {}): Promise<import("../entities").Exercise>;
+    protected createTestTraining(override?: {}): Promise<import("../entities").Training>;
+    protected createTestNutrition(override?: {}): Promise<import("../entities").Nutrition>;
+    protected createTestPromotion(override?: {}): Promise<import("../entities").Promotion>;
+    protected createTestUsers(count: number, override?: {}): Promise<{}[]>;
+    protected createTestGyms(count: number, override?: {}): Promise<{}[]>;
+    protected createTestCourses(count: number, override?: {}): Promise<{}[]>;
+    protected createTestExercises(count: number, override?: {}): Promise<{}[]>;
+    protected createTestTrainings(count: number, override?: {}): Promise<{}[]>;
+    protected createTestNutritions(count: number, override?: {}): Promise<{}[]>;
+    protected createTestPromotions(count: number, override?: {}): Promise<{}[]>;
+    protected expectEntityCount(entity: string, count: number): Promise<void>;
+    protected expectEntityExists(entity: string, criteria: object): Promise<void>;
+    protected expectEntityNotExists(entity: string, criteria: object): Promise<void>;
+}
