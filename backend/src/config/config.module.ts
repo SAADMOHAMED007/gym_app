@@ -3,6 +3,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import configuration from './configuration';
 import { validationSchema } from './validation.schema';
+import { ConfigService } from './config.service';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { validationSchema } from './validation.schema';
       cache: true,
     }),
   ],
-  exports: [NestConfigModule, CacheModule], // Export both
+  providers: [ConfigService],
+  exports: [NestConfigModule, CacheModule, ConfigService], // Export ConfigService as well
 })
 export class ConfigModule {}

@@ -12,6 +12,7 @@ const cache_manager_1 = require("@nestjs/cache-manager");
 const config_1 = require("@nestjs/config");
 const configuration_1 = require("./configuration");
 const validation_schema_1 = require("./validation.schema");
+const config_service_1 = require("./config.service");
 let ConfigModule = class ConfigModule {
 };
 exports.ConfigModule = ConfigModule;
@@ -34,7 +35,8 @@ exports.ConfigModule = ConfigModule = __decorate([
                 cache: true,
             }),
         ],
-        exports: [config_1.ConfigModule, cache_manager_1.CacheModule],
+        providers: [config_service_1.ConfigService],
+        exports: [config_1.ConfigModule, cache_manager_1.CacheModule, config_service_1.ConfigService],
     })
 ], ConfigModule);
 //# sourceMappingURL=config.module.js.map

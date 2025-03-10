@@ -8,14 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
 const cache_module_1 = require("./modules/cache/cache.module");
 const courses_module_1 = require("./modules/courses/courses.module");
 const workouts_module_1 = require("./modules/workouts/workouts.module");
-const Joi = require("joi");
+const config_module_1 = require("./config/config.module");
 const data_source_1 = require("./config/data-source");
 let AppModule = class AppModule {
 };
@@ -23,18 +22,7 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            config_1.ConfigModule.forRoot({
-                isGlobal: true,
-                validationSchema: Joi.object({
-                    NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
-                    PORT: Joi.number().default(3000),
-                    DATABASE_URL: Joi.string().required(),
-                    JWT_SECRET: Joi.string().required(),
-                    JWT_EXPIRATION_TIME: Joi.string().default('1d'),
-                    JWT_REFRESH_SECRET: Joi.string().required(),
-                    JWT_REFRESH_EXPIRATION_TIME: Joi.string().default('7d'),
-                }),
-            }),
+            config_module_1.ConfigModule,
             typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions),
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
