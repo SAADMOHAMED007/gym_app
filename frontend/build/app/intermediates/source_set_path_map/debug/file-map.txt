@@ -1,7 +1,0 @@
-com.example.gym_app-debug-0 C:\Users\moham\Desktop\gym_app\frontend\android\app\src\debug\res
-com.example.gym_app-main-1 C:\Users\moham\Desktop\gym_app\frontend\android\app\src\main\res
-com.example.gym_app-pngs-2 C:\Users\moham\Desktop\gym_app\frontend\build\app\generated\res\pngs\debug
-com.example.gym_app-resValues-3 C:\Users\moham\Desktop\gym_app\frontend\build\app\generated\res\resValues\debug
-com.example.gym_app-mergeDebugResources-4 C:\Users\moham\Desktop\gym_app\frontend\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
-com.example.gym_app-mergeDebugResources-5 C:\Users\moham\Desktop\gym_app\frontend\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
-com.example.gym_app-merged_res-6 C:\Users\moham\Desktop\gym_app\frontend\build\app\intermediates\merged_res\debug

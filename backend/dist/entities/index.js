@@ -21,4 +21,7 @@ __exportStar(require("./exercise.entity"), exports);
 __exportStar(require("./training.entity"), exports);
 __exportStar(require("./nutrition.entity"), exports);
 __exportStar(require("./promotion.entity"), exports);
+__exportStar(require("./workout.entity"), exports);
+__exportStar(require("./workout-exercise.entity"), exports);
+__exportStar(require("./exercise-set.entity"), exports);
 //# sourceMappingURL=index.js.map

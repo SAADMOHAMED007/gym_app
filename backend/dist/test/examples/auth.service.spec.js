@@ -75,6 +75,7 @@ describe('AuthService', () => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 currentHashedRefreshToken: undefined,
+                workouts: [],
             };
             jest.spyOn(usersService, 'findByEmail').mockResolvedValue(testUser);
             jest.spyOn(authService, 'comparePasswords')
@@ -107,6 +108,7 @@ describe('AuthService', () => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 currentHashedRefreshToken: undefined,
+                workouts: [],
             };
             jest.spyOn(usersService, 'findByEmail').mockResolvedValue(testUser);
             jest.spyOn(authService, 'comparePasswords')
@@ -133,6 +135,7 @@ describe('AuthService', () => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 currentHashedRefreshToken: undefined,
+                workouts: [],
             };
             const expectedPayload = {
                 sub: testUser.id,
@@ -173,6 +176,7 @@ describe('AuthService', () => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 currentHashedRefreshToken: undefined,
+                workouts: [],
             };
             const expectedResponse = {
                 access_token: 'test-token',

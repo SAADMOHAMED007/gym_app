@@ -8,53 +8,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
-const cache_manager_1 = require("@nestjs/cache-manager");
-const app_module_1 = require("./config/app.module");
-const config_service_1 = require("./config/config.service");
-const auth_1 = require("./modules/auth");
-const users_1 = require("./modules/users");
-const user_entity_1 = require("./entities/user.entity");
-const gym_entity_1 = require("./entities/gym.entity");
-const course_entity_1 = require("./entities/course.entity");
-const exercise_entity_1 = require("./entities/exercise.entity");
-const training_entity_1 = require("./entities/training.entity");
-const nutrition_entity_1 = require("./entities/nutrition.entity");
-const promotion_entity_1 = require("./entities/promotion.entity");
+const auth_module_1 = require("./modules/auth/auth.module");
+const users_module_1 = require("./modules/users/users.module");
+const cache_module_1 = require("./modules/cache/cache.module");
+const courses_module_1 = require("./modules/courses/courses.module");
+const workouts_module_1 = require("./modules/workouts/workouts.module");
+const Joi = require("joi");
+const data_source_1 = require("./config/data-source");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            app_module_1.AppConfigModule,
-            typeorm_1.TypeOrmModule.forRootAsync({
-                imports: [app_module_1.AppConfigModule],
-                useFactory: (configService) => ({
-                    type: 'mysql',
-                    host: configService.database.host,
-                    port: configService.database.port,
-                    username: configService.database.username,
-                    password: configService.database.password,
-                    database: configService.database.database,
-                    entities: [user_entity_1.User, gym_entity_1.Gym, course_entity_1.Course, exercise_entity_1.Exercise, training_entity_1.Training, nutrition_entity_1.Nutrition, promotion_entity_1.Promotion],
-                    synchronize: configService.isDevelopment,
-                    logging: configService.isDevelopment,
-                }),
-                inject: [config_service_1.ConfigService],
-            }),
-            cache_manager_1.CacheModule.registerAsync({
+            config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                imports: [app_module_1.AppConfigModule],
-                useFactory: (configService) => ({
-                    ttl: configService.cache.ttl,
-                    max: configService.cache.max,
+                validationSchema: Joi.object({
+                    NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+                    PORT: Joi.number().default(3000),
+                    DATABASE_URL: Joi.string().required(),
+                    JWT_SECRET: Joi.string().required(),
+                    JWT_EXPIRATION_TIME: Joi.string().default('1d'),
+                    JWT_REFRESH_SECRET: Joi.string().required(),
+                    JWT_REFRESH_EXPIRATION_TIME: Joi.string().default('7d'),
                 }),
-                inject: [config_service_1.ConfigService],
             }),
-            auth_1.AuthModule,
-            users_1.UsersModule,
+            typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions),
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            cache_module_1.CacheModule,
+            courses_module_1.CoursesModule,
+            workouts_module_1.WorkoutsModule,
         ],
+        providers: [],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

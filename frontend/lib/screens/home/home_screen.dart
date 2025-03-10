@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gym_app/providers/auth_provider.dart';
+import 'package:gym_app/screens/workout/workout_calendar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,8 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).user;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gym App'),
@@ -36,9 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              await Provider.of<AuthProvider>(context, listen: false).logout();
-              if (!mounted) return;
-              Navigator.of(context).pushReplacementNamed('/login');
+              try {
+                await Provider.of<AuthProvider>(context, listen: false).logout();
+                if (!mounted) return;
+                Navigator.of(context).pushReplacementNamed('/login');
+              } catch (error) {
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Logout failed: $error')),
+                );
+              }
             },
           ),
         ],
@@ -76,26 +82,18 @@ class DashboardTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).user;
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-            Text(
-              'Welcome, ${user?.firstName ?? "User"}!',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Quick Actions',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
+          Text(
+            'Welcome, ${user?.firstName ?? "User"}!',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           const SizedBox(height: 24),
           const Text(
             'Quick Actions',
@@ -114,30 +112,40 @@ class DashboardTab extends StatelessWidget {
             children: [
               _QuickActionCard(
                 icon: Icons.calendar_today,
-                title: 'Book Course',
+                title: 'Workout Calendar',
                 onTap: () {
-                  // Navigate to course booking
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const WorkoutCalendarScreen(),
+                    ),
+                  );
                 },
               ),
               _QuickActionCard(
                 icon: Icons.fitness_center,
                 title: 'Start Workout',
                 onTap: () {
-                  // Navigate to workout
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Coming soon: Start Workout')),
+                  );
                 },
               ),
               _QuickActionCard(
                 icon: Icons.person,
                 title: 'Find Coach',
                 onTap: () {
-                  // Navigate to coach list
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Coming soon: Find Coach')),
+                  );
                 },
               ),
               _QuickActionCard(
                 icon: Icons.local_offer,
                 title: 'Promotions',
                 onTap: () {
-                  // Navigate to promotions
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Coming soon: Promotions')),
+                  );
                 },
               ),
             ],
@@ -196,8 +204,29 @@ class CoursesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Courses Tab - Coming Soon'),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.calendar_today,
+            size: 64,
+            color: Colors.grey,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Courses Coming Soon',
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'We\'re working on adding courses to help you achieve your fitness goals.',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -207,8 +236,29 @@ class ExercisesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Exercises Tab - Coming Soon'),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.fitness_center,
+            size: 64,
+            color: Colors.grey,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Exercises Coming Soon',
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'We\'re building a comprehensive exercise library for your workouts.',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -218,15 +268,21 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).user;
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 50,
-            child: Icon(Icons.person, size: 50),
+            backgroundImage: user?.profilePicture != null
+                ? NetworkImage(user!.profilePicture!)
+                : null,
+            child: user?.profilePicture == null
+                ? const Icon(Icons.person, size: 50)
+                : null,
           ),
           const SizedBox(height: 16),
           Text(
@@ -242,28 +298,44 @@ class ProfileTab extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('Edit Profile'),
             onTap: () {
-              // Navigate to edit profile
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Edit Profile coming soon')),
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
-              // Navigate to settings
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Settings coming soon')),
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.help),
             title: const Text('Help & Support'),
             onTap: () {
-              // Navigate to help
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Help & Support coming soon')),
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.info),
             title: const Text('About'),
             onTap: () {
-              // Navigate to about
+              showAboutDialog(
+                context: context,
+                applicationName: 'Gym App',
+                applicationVersion: '1.0.0',
+                applicationIcon: const FlutterLogo(size: 32),
+                children: [
+                  const Text(
+                    'A comprehensive gym management and fitness tracking application.',
+                  ),
+                ],
+              );
             },
           ),
         ],

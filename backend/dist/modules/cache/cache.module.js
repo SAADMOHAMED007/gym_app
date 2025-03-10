@@ -15,16 +15,20 @@ let CacheModule = class CacheModule {
 };
 exports.CacheModule = CacheModule;
 exports.CacheModule = CacheModule = __decorate([
-    (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
             cache_manager_1.CacheModule.registerAsync({
-                useFactory: (configService) => ({
-                    ttl: configService.get('CACHE_TTL', 300),
-                    max: configService.get('CACHE_MAX_ITEMS', 100),
-                    isGlobal: true,
-                }),
+                imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
+                useFactory: (configService) => {
+                    const ttl = parseInt(configService.get('CACHE_TTL') || '60', 10);
+                    const max = parseInt(configService.get('CACHE_MAX') || '100', 10);
+                    return {
+                        ttl: ttl > 0 ? ttl : 60,
+                        max: max > 0 ? max : 100,
+                        isGlobal: true,
+                    };
+                },
             }),
         ],
         providers: [

@@ -50,6 +50,7 @@ export class CourseTestHelper {
       createdAt: new Date(),
       updatedAt: new Date(),
       currentHashedRefreshToken: undefined,
+      workouts: [],
     };
   }
 

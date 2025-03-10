@@ -5,3 +5,6 @@ export * from './exercise.entity';
 export * from './training.entity';
 export * from './nutrition.entity';
 export * from './promotion.entity';
+export * from './workout.entity';
+export * from './workout-exercise.entity';
+export * from './exercise-set.entity';

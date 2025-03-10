@@ -4,9 +4,7 @@
     
     <application
         android:label="Gym App"
-        android:name="com.example.gym_app"
-
-
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity

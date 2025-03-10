@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Gym } from './gym.entity';
 import { Training } from './training.entity';
+import { Workout } from './workout.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -46,6 +47,9 @@ export class User {
 
   @OneToMany(() => Training, training => training.coach)
   coachTrainings: Training[];
+
+  @OneToMany(() => Workout, workout => workout.user)
+  workouts: Workout[];
 
   @Column({ default: true })
   isActive: boolean;

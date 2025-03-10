@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigModule = void 0;
 const common_1 = require("@nestjs/common");
+const cache_manager_1 = require("@nestjs/cache-manager");
 const config_1 = require("@nestjs/config");
 const configuration_1 = require("./configuration");
 const validation_schema_1 = require("./validation.schema");
@@ -17,6 +18,10 @@ exports.ConfigModule = ConfigModule;
 exports.ConfigModule = ConfigModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            cache_manager_1.CacheModule.register({
+                isGlobal: true,
+                ttl: 30,
+            }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 load: [configuration_1.default],
@@ -29,7 +34,7 @@ exports.ConfigModule = ConfigModule = __decorate([
                 cache: true,
             }),
         ],
-        exports: [config_1.ConfigModule],
+        exports: [config_1.ConfigModule, cache_manager_1.CacheModule],
     })
 ], ConfigModule);
 //# sourceMappingURL=config.module.js.map

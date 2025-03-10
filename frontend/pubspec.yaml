@@ -1,5 +1,5 @@
 name: gym_app
-description: A comprehensive gym and fitness application
+description: "A Flutter application for gym management and fitness tracking."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -21,6 +21,9 @@ dependencies:
   cached_network_image: ^3.2.3
   flutter_local_notifications: ^15.1.1
   url_launcher: ^6.1.14
+  table_calendar: ^3.0.9
+  uuid: ^4.0.0
+  logger: ^2.0.2  # Moved logger here
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from '@nestjs/cache-manager';
-import { AppConfigModule } from './config/app.module';
-import { ConfigService } from './config/config.service';
-import { AuthModule } from './modules/auth';
-import { UsersModule } from './modules/users';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { CacheModule } from './modules/cache/cache.module';
+import { CoursesModule } from './modules/courses/courses.module';
+import { WorkoutsModule } from './modules/workouts/workouts.module';
+import * as Joi from 'joi';
+import { dataSourceOptions } from './config/data-source';
 import { User } from './entities/user.entity';
 import { Gym } from './entities/gym.entity';
 import { Course } from './entities/course.entity';
@@ -15,36 +19,25 @@ import { Promotion } from './entities/promotion.entity';
 
 @Module({
   imports: [
-    AppConfigModule,
-    
-    TypeOrmModule.forRootAsync({
-      imports: [AppConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.database.host,
-        port: configService.database.port,
-        username: configService.database.username,
-        password: configService.database.password,
-        database: configService.database.database,
-        entities: [User, Gym, Course, Exercise, Training, Nutrition, Promotion],
-        synchronize: configService.isDevelopment,
-        logging: configService.isDevelopment,
-      }),
-      inject: [ConfigService],
-    }),
-
-    CacheModule.registerAsync({
+    ConfigModule.forRoot({
       isGlobal: true,
-      imports: [AppConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        ttl: configService.cache.ttl,
-        max: configService.cache.max,
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+        PORT: Joi.number().default(3000),
+        DATABASE_URL: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().default('1d'),
+        JWT_REFRESH_SECRET: Joi.string().required(),
+        JWT_REFRESH_EXPIRATION_TIME: Joi.string().default('7d'),
       }),
-      inject: [ConfigService],
     }),
-
+    TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UsersModule,
+    CacheModule,
+    CoursesModule,
+    WorkoutsModule,
   ],
+  providers: [],
 })
 export class AppModule {}

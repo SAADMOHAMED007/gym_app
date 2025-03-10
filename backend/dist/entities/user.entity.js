@@ -14,6 +14,7 @@ const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const gym_entity_1 = require("./gym.entity");
 const training_entity_1 = require("./training.entity");
+const workout_entity_1 = require("./workout.entity");
 var UserRole;
 (function (UserRole) {
     UserRole["ADMIN"] = "admin";
@@ -22,7 +23,7 @@ var UserRole;
 })(UserRole || (exports.UserRole = UserRole = {}));
 let User = class User {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, email: { required: true, type: () => String }, password: { required: true, type: () => String }, role: { required: true, enum: require("./user.entity").UserRole }, profilePicture: { required: true, type: () => String }, gym: { required: true, type: () => require("./gym.entity").Gym }, gymId: { required: true, type: () => String }, clientTrainings: { required: true, type: () => [require("./training.entity").Training] }, coachTrainings: { required: true, type: () => [require("./training.entity").Training] }, isActive: { required: true, type: () => Boolean }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, currentHashedRefreshToken: { required: false, type: () => String } };
+        return { id: { required: true, type: () => String }, firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, email: { required: true, type: () => String }, password: { required: true, type: () => String }, role: { required: true, enum: require("./user.entity").UserRole }, profilePicture: { required: true, type: () => String }, gym: { required: true, type: () => require("./gym.entity").Gym }, gymId: { required: true, type: () => String }, clientTrainings: { required: true, type: () => [require("./training.entity").Training] }, coachTrainings: { required: true, type: () => [require("./training.entity").Training] }, workouts: { required: true, type: () => [require("./workout.entity").Workout] }, isActive: { required: true, type: () => Boolean }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, currentHashedRefreshToken: { required: false, type: () => String } };
     }
 };
 exports.User = User;
@@ -74,6 +75,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => training_entity_1.Training, training => training.coach),
     __metadata("design:type", Array)
 ], User.prototype, "coachTrainings", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => workout_entity_1.Workout, workout => workout.user),
+    __metadata("design:type", Array)
+], User.prototype, "workouts", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)

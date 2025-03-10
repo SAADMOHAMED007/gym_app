@@ -82,6 +82,7 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         currentHashedRefreshToken: undefined,
+        workouts: [],
       };
 
       jest.spyOn(usersService, 'findByEmail').mockResolvedValue(testUser);
@@ -127,6 +128,7 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         currentHashedRefreshToken: undefined,
+        workouts: [],
       };
 
       jest.spyOn(usersService, 'findByEmail').mockResolvedValue(testUser);
@@ -160,6 +162,7 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         currentHashedRefreshToken: undefined,
+        workouts: [],
       };
 
       const expectedPayload: JwtPayload = {
@@ -208,6 +211,7 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         currentHashedRefreshToken: undefined,
+        workouts: [],
       };
 
       const expectedResponse: AuthResponse = {
